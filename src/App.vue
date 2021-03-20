@@ -30,16 +30,24 @@
         <th v-for = "i in ['時柱','日柱','月柱','年柱']" :key="i">{{ i }}</th>
       </tr>
       <tr>
-        <th> {{big_luck_sky}} </th>
-        <th v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}</th>
+        <th> {{big_luck[0].big_luck_sky}}<sup>{{big_luck[0].umyang}}</sup> </th>
+        <th v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}<sup>{{ganzi[i].umyang}}</sup><sub>{{ganzi[i].ten_shin}}</sub></th>
       </tr>
       <tr>
-        <th> {{big_luck_ear}} </th>
-        <th v-for = "i in [7,5,3,1]" :key="i">{{ ganzi[i].hanja }}</th>
+        <th> {{big_luck[1].big_luck_ear}} </th>
+        <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].hanja }}</th>
       </tr>
       <tr>
-        <th> {{big_luck_Amzang}} </th>
-        <th v-for = "i in [7,5,3,1]" :key="i" >{{ ganzi[i].amjang[0] }}</th>
+        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[1] }}</th>
+      </tr>
+      <tr>
+        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[2] }}</th>
+      </tr>
+      <tr>
+        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[3] }}</th>
       </tr>
     </table>
 
@@ -74,15 +82,15 @@ export default {
     return {
       typed_ganzi: '신미을미신사을미',
       ganzi: [
-        {id: 0, hanja: "", value: "", umyang: ""}, //연간
-        {id: 1, hanja: "", value: "", amjang: [] },//연지
-        {id: 2, hanja: "", value: "", umyang: ""}, //월간
-        {id: 3, hanja: "", value: "", amjang: [] },//월지
-        {id: 4, hanja: "", value: "", umyang: ""}, //일간
-        {id: 5, hanja: "", value: "", amjang: [] },//일지
-        {id: 6, hanja: "", value: "", umyang: ""}, //시간
-        {id: 7, hanja: "", value: "", amjang: [] },//시지
-        {id: 9, hanja: "", value: "", amjang: [] } //월지 한번더
+        {id: 0, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //연간
+        {id: 1, hanja: "o", value: "o", amjang: [] },//연지
+        {id: 2, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //월간
+        {id: 3, hanja: "o", value: "o", amjang: [] },//월지
+        {id: 4, hanja: "o", value: "o", umyang: "o", ten_shin: "肩劫"}, //일간
+        {id: 5, hanja: "o", value: "o", amjang: [] },//일지
+        {id: 6, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //시간
+        {id: 7, hanja: "o", value: "o", amjang: [] },//시지
+        {id: 9, hanja: "o", value: "o", amjang: [] } //월지 한번더
       ],
       name: '',
       gender: '양',
@@ -131,9 +139,11 @@ export default {
         {id: '축', hanja: "丑", value: 2, amjang: [
           '己辛癸',['己',18],['辛',3],['癸',9]]},
       ],
-      big_luck_sky: 'O',
-      big_luck_ear: 'O',
-      big_luck_Amzang: 'O',
+      big_luck: [
+        {big_luck_sky: 'o', umyang: 'o'},
+        {big_luck_ear: 'o'},
+        {big_luck_Amzang: ''},
+      ],
       GH: [
         { text: '??'},
         { text: '吉' },
@@ -143,12 +153,75 @@ export default {
     }
   },
   methods: {
+    get_10shin(a,b){ ///a: 십신을 도출하고자 하는 천간, b: 해당 천간의 음양 (정편 구분을 위해)
+      var ss_o = [];var ss_x = [];
+      if (this.ganzi[4].value == 0){             // 일주가 목오행
+        var ss_o = ["비견","식신","편재","편관","편인"] // 오행이 같음
+        var ss_x = ["비겁","상관","정재","정관","정인"] // 오행이 다름
+      }
+      else if (this.ganzi[4].value == 1){             // 일주가 화오행
+        var ss_o = ["편인","비견","식신","편재","편관"] // 오행이 같음
+        var ss_x = ["정인","비겁","상관","정재","정관"] // 오행이 다름
+      }
+      else if (this.ganzi[4].value == 2){             // 일주가 토오행
+        var ss_o = ["편관","편인","비견","식신","편재"] // 오행이 같음
+        var ss_x = ["정관","정인","비겁","상관","정재"] // 오행이 다름
+      }
+      else if (this.ganzi[4].value == 3){                  // 일주가 금오행
+        var ss_o = ["편재","편관","편인","비견","식신"] // 오행이 같음
+        var ss_x = ["정재","정관","정인","비겁","상관"] // 오행이 다름
+      }
+      else if (this.ganzi[4].value == 4){             // 일주가 수오행
+        var ss_o = ["식신","편재","편관","편인","비견"] // 오행이 같음
+        var ss_x = [,"상관","정재","정관","정인","비겁"] // 오행이 다름
+      }
+      if (this.ganzi[4].umyang == b){
+          return ss_o[a]
+      }
+      else {
+        return ss_x[a]
+      }
+    },
+    change_umyang(a){
+      if (a == "양"){
+        return "+"
+      }
+      else if(a == "음"){
+        return "-"
+      }
+    },
+    get_umyang(a){
+      const sameChar1 = (element) => element == a;
+      const start1 = this.only_Sky.findIndex(sameChar1)
+      var aa = this.sky_char[start1].umyang
+      var res = this.change_umyang(aa)
+      return res
+    },
     change_ganzi(){
       //천간 넣기
-      for (let i = 0; i<9;i+=2){
-        for (let k =0; k<10;k++){
+      var index = [4,0,2,6]
+      for (let ii = 0;ii<4;ii++){
+        var i = index[ii]
+        if (i==4){
+          for (let k =0; k<10;k++){
           if (this.typed_ganzi.split('')[i] == this.sky_char[k].id){
-            this.ganzi[i] = this.sky_char[k]
+            this.ganzi[i].hanja = this.sky_char[k].hanja
+            this.ganzi[i].value = this.sky_char[k].value
+            this.ganzi[i].umyang = this.change_umyang(this.sky_char[k].umyang)
+            var five_hang = this.ganzi[i].value
+            this.ganzi[i].ten_shin = "견겁"
+          }
+          }  
+        }
+        else{
+          for (let k =0; k<10;k++){
+            if (this.typed_ganzi.split('')[i] == this.sky_char[k].id){
+              this.ganzi[i].hanja = this.sky_char[k].hanja
+              this.ganzi[i].value = this.sky_char[k].value
+              this.ganzi[i].umyang = this.change_umyang(this.sky_char[k].umyang)
+              var five_hang = this.ganzi[i].value
+              this.ganzi[i].ten_shin = this.get_10shin(five_hang, this.ganzi[i].umyang)
+            }
           }
         }
       }
@@ -208,14 +281,16 @@ export default {
     },
     update_Bigluck(i){
       if (i==12){
-        this.big_luck_sky = 'O'
-        this.big_luck_ear = 'O'
-        this.big_luck_Amzang = 'O'
+        this.big_luck[0].big_luck_sky = ''
+        this.big_luck[0].umyang = ''
+        this.big_luck[1].big_luck_ear = ''
+        this.big_luck[2].big_luck_Amzang = ''
       }
       else{
-        this.big_luck_sky = this.get_BigLuck()[i][0][0]
-        this.big_luck_ear = this.get_BigLuck()[i][0][1]
-        this.big_luck_Amzang = this.get_BigLuck()[i][1][0]
+        this.big_luck[0].big_luck_sky = this.get_BigLuck()[i][0][0]
+        this.big_luck[0].umyang = this.get_umyang(this.get_BigLuck()[i][0][0])
+        this.big_luck[1].big_luck_ear = this.get_BigLuck()[i][0][1]
+        this.big_luck[2].big_luck_Amzang = this.get_BigLuck()[i][1][0]
         var a_arr = this.get_BigLuck()[i][1].slice(1,this.get_BigLuck()[i][1].length)
         for (let k =0;k<a_arr.length;k++){
           var a5 = this.get_5hang(a_arr[k][0])
