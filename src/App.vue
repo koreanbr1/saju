@@ -38,15 +38,15 @@
         <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].hanja }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th> {{big_luck[2].big_luck_Amzang[1]}} </th>
         <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[1] }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th> {{big_luck[2].big_luck_Amzang[2]}} </th>
         <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[2] }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang}} </th>
+        <th> {{big_luck[2].big_luck_Amzang[3]}} </th>
         <th v-for = "i in [7,5,8,1]" :key="i">{{ ganzi[i].amjang[3] }}</th>
       </tr>
     </table>
@@ -70,6 +70,11 @@
         </td>
       </tr>
     </table>
+    {{gisae[0].value}},{{gisae[0].content}}<br>
+    {{gisae[1].value}},{{gisae[1].content}}<br>
+    {{gisae[2].value}},{{gisae[2].content}}<br>
+    {{gisae[3].value}},{{gisae[3].content}}<br>
+    {{gisae[4].value}},{{gisae[4].content}}<br>
     <div class="pentagon" >
       <span v-for= "i in [0,1,2,3,4]" :key="i" :class="{red: true}">{{gisae[i].id }},{{gisae[i].content}}</span>
     </div>
@@ -86,13 +91,13 @@ export default {
         {id: 1, hanja: "o", value: "o", amjang: [] },//연지
         {id: 2, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //월간
         {id: 3, hanja: "o", value: "o", amjang: [] },//월지
-        {id: 4, hanja: "o", value: "o", umyang: "o", ten_shin: "肩劫"}, //일간
+        {id: 4, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //일간
         {id: 5, hanja: "o", value: "o", amjang: [] },//일지
         {id: 6, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //시간
         {id: 7, hanja: "o", value: "o", amjang: [] },//시지
         {id: 9, hanja: "o", value: "o", amjang: [] } //월지 한번더
       ],
-      name: '',
+      name: '장승표',
       gender: '양',
       gisae:[
         {id: '木', value: 0, content: []},
@@ -117,32 +122,32 @@ export default {
         {id: '인', hanja: "寅", value: 0, amjang: [
           '甲丙戊',['甲',16],['丙',7],['戊',7]] },
         {id: '묘', hanja: "卯", value: 0, amjang: [
-          '乙甲', ['乙',30]]},
+          '乙甲', ['乙',20],['甲',10]]},
         {id: '진', hanja: "辰", value: 2, amjang: [
           '戊癸乙',['戊',18],['癸',3],['乙',9]]},
         {id: '사', hanja: "巳", value: 1, amjang: [
           '丙庚戊',['丙',16],['庚',7],['戊',7]]},
         {id: '오', hanja: "午", value: 1, amjang: [
-          '丁己丙',['丁',30],]},
+          '丁己丙',['丁',10],['己',10],['丙',10]]},
         {id: '미', hanja: "未", value: 2, amjang: [
           '己乙丁',['己',18],['乙',3],['丁',9]]},
         {id: '신', hanja: "申", value: 3, amjang: [
           '庚壬戊',['庚',16],['壬',7],['戊',7]]},
         {id: '유', hanja: "酉", value: 3, amjang: [
-          '辛庚',['辛',30]]},
+          '辛庚',['辛',20],['庚',10]]},
         {id: '술', hanja: "戌", value: 2, amjang: [
           '戊丁辛',['戊',18],['丁',3],['辛',9]]},
         {id: '해', hanja: "亥", value: 4, amjang: [
           '壬甲戊',['壬',16],['甲',7],['戊',7]]},
         {id: '자', hanja: "子", value: 4, amjang: [
-          '癸壬',['癸',30]]},
+          '癸壬',['癸',20],['壬',10]]},
         {id: '축', hanja: "丑", value: 2, amjang: [
           '己辛癸',['己',18],['辛',3],['癸',9]]},
       ],
       big_luck: [
-        {big_luck_sky: 'o', umyang: 'o'},
-        {big_luck_ear: 'o'},
-        {big_luck_Amzang: ''},
+        {big_luck_sky: '', umyang: ''},
+        {big_luck_ear: ''},
+        {big_luck_Amzang: []},
       ],
       GH: [
         { text: '??'},
@@ -232,7 +237,10 @@ export default {
             if (this.typed_ganzi.split('')[i] == this.earth_char[k].id){
               this.ganzi[i].hanja = this.earth_char[k].hanja
               this.ganzi[i].value = this.earth_char[k].value
-              this.ganzi[i].amjang = this.earth_char[k].amjang
+              // this.ganzi[i].amjang = this.earth_char[k].amjang
+              var obb = this.earth_char[k].amjang
+              // console.log(obb[1].push())
+              this.ganzi[i].amjang = obb
             }
           }
 
@@ -240,7 +248,9 @@ export default {
         else {
           this.ganzi[i-1].hanja = this.ganzi[3].hanja
           this.ganzi[i-1].value = this.ganzi[3].value
-          this.ganzi[i-1].amjang = this.ganzi[3].amjang    
+          // this.ganzi[i-1].amjang = this.ganzi[3].amjang    
+          var obb = this.earth_char[3].amjang
+          this.ganzi[i-1].amjang = obb
         }
       }
     },
@@ -290,7 +300,7 @@ export default {
         this.big_luck[0].big_luck_sky = this.get_BigLuck()[i][0][0]
         this.big_luck[0].umyang = this.get_umyang(this.get_BigLuck()[i][0][0])
         this.big_luck[1].big_luck_ear = this.get_BigLuck()[i][0][1]
-        this.big_luck[2].big_luck_Amzang = this.get_BigLuck()[i][1][0]
+        this.big_luck[2].big_luck_Amzang = this.get_BigLuck()[i][1]
         var a_arr = this.get_BigLuck()[i][1].slice(1,this.get_BigLuck()[i][1].length)
         for (let k =0;k<a_arr.length;k++){
           var a5 = this.get_5hang(a_arr[k][0])
