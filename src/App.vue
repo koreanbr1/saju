@@ -24,48 +24,46 @@
     </form>
     <br>
     <button @click="[change_ganzi(),cal_gisae(12)]">간지입력완료</button>
-    <table>
+    <table >
       <tr>
         <th> 大運 </th>
-        <th v-for ="i in ['時柱','日柱','月柱','年柱']" :key="i">{{ i }}</th>
+        <th v-for = "i in ['時柱','日柱','月柱','年柱']" :key="i">{{ i }}</th>
       </tr>
       <tr>
         <th> {{big_luck_sky}} </th>
-        <th v-for ="i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}</th>
+        <th v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}</th>
       </tr>
       <tr>
         <th> {{big_luck_ear}} </th>
-        <th v-for ="i in [7,5,3,1]" :key="i">{{ ganzi[i].hanja }}</th>
+        <th v-for = "i in [7,5,3,1]" :key="i">{{ ganzi[i].hanja }}</th>
       </tr>
       <tr>
         <th> {{big_luck_Amzang}} </th>
-        <th v-for = "i in [7,5,3,1]" :key="i">{{ ganzi[i].amjang[0] }}</th>
+        <th v-for = "i in [7,5,3,1]" :key="i" >{{ ganzi[i].amjang[0] }}</th>
       </tr>
     </table>
 
     運路(운로)
-    <br>
-    <table>
-      <tr>
-        <td>
+    <td>
           <button @click=[update_Bigluck(12),cal_gisae(12)]>원국만 보기</button>
-        </td>
-        <td v-for ="i in [11,10,9,8,7,6,5,4,3,2,1,0]" :key="i">
+    </td>
+    <table>
+      <tr>    
+        <td v-for = "i in [11,10,9,8,7,6,5,4,3,2,1,0]" :key="i">
           <button @click=[update_Bigluck(i),cal_gisae(i)]>{{ get_BigLuck()[i][0][0] }}<br>
             {{get_BigLuck()[i][0][1] }}
           </button>
-          <br>
           <select>
             <option disabled value="">吉凶</option>
-            <option v-for="option in options" :key="option">
+            <option v-for= "option in GH" :key= "option.text">
             {{ option.text }}
             </option>
           </select>
         </td>
       </tr>
     </table>
-    <div class="pentagon">
-      <span v-for="i in [0,1,2,3,4]" :key="i" :class="{red: true}">{{gisae[i].id }},{{gisae[i].content}}</span>
+    <div class="pentagon" >
+      <span v-for= "i in [0,1,2,3,4]" :key="i" :class="{red: true}">{{gisae[i].id }},{{gisae[i].content}}</span>
     </div>
   </div>
 </template>
@@ -136,11 +134,11 @@ export default {
       big_luck_sky: 'O',
       big_luck_ear: 'O',
       big_luck_Amzang: 'O',
-      options: [
-        { text: '○' },
-        { text: '△'},
-        { text: 'Χ'},
-        { text: '??'}
+      GH: [
+        { text: '??'},
+        { text: '吉' },
+        { text: '平'},
+        { text: '凶'},
       ]
     }
   },
@@ -208,55 +206,55 @@ export default {
         return empty_array
       }
     },
-      update_Bigluck(i){
-        if (i==12){
-          this.big_luck_sky = 'O'
-          this.big_luck_ear = 'O'
-          this.big_luck_Amzang = 'O'
+    update_Bigluck(i){
+      if (i==12){
+        this.big_luck_sky = 'O'
+        this.big_luck_ear = 'O'
+        this.big_luck_Amzang = 'O'
+      }
+      else{
+        this.big_luck_sky = this.get_BigLuck()[i][0][0]
+        this.big_luck_ear = this.get_BigLuck()[i][0][1]
+        this.big_luck_Amzang = this.get_BigLuck()[i][1][0]
+        var a_arr = this.get_BigLuck()[i][1].slice(1,this.get_BigLuck()[i][1].length)
+        for (let k =0;k<a_arr.length;k++){
+          var a5 = this.get_5hang(a_arr[k][0])
+          this.gisae[a5].content.push( 
+            [this.get_BigLuck()[i][0][1]+'中'+a_arr[k][0],
+              a_arr[k][1]] )
+          this.gisae[a5].content.push( 
+            [this.get_BigLuck()[i][0][1]+'中'+a_arr[k][0],
+              a_arr[k][1]] )
+          this.gisae[a5].value += a_arr[k][1]*2
         }
-        else{
-          this.big_luck_sky = this.get_BigLuck()[i][0][0]
-          this.big_luck_ear = this.get_BigLuck()[i][0][1]
-          this.big_luck_Amzang = this.get_BigLuck()[i][1][0]
-          a_arr = this.get_BigLuck()[i][1].slice(1,this.get_BigLuck()[i][1].length)
-          for (let k =0;k<a_arr.length;k++){
-            a5 = this.get_5hang(a_arr[k][0])
-            this.gisae[a5].content.push( 
-              [this.get_BigLuck()[i][0][1]+'中'+a_arr[k][0],
-                a_arr[k][1]] )
-            this.gisae[a5].content.push( 
-              [this.get_BigLuck()[i][0][1]+'中'+a_arr[k][0],
-                a_arr[k][1]] )
-            this.gisae[a5].value += a_arr[k][1]*2
-          }
-        }
-      },
-      reset_gisae(){
-        for (i = 0; i<5;i++){
-          this.gisae[i].value = 0
-          this.gisae[i].content = []
-        }
-      },
-      get_5hang(a){
-        const sameChar1 = (element) => element == a
-        const start1 = this.only_Sky.findIndex(sameChar1)
-        return this.sky_char[start1].value
-      },
-      get_dup_gisae(ar){
-        const result = []
-        ar.forEach((x)=>{
-          result[x] = (result[x] || 0)+1;
-        })
-        tt = Object.entries(result)
-        return tt
-      },
+      }
+    },
+    reset_gisae(){
+      for (var i = 0; i<5;i++){
+        this.gisae[i].value = 0
+        this.gisae[i].content = []
+      }
+    },
+    get_5hang(a){
+      const sameChar1 = (element) => element == a
+      const start1 = this.only_Sky.findIndex(sameChar1)
+      return this.sky_char[start1].value
+    },
+    get_dup_gisae(ar){
+      const result = []
+      ar.forEach((x)=>{
+        result[x] = (result[x] || 0)+1;
+      })
+      var tt = Object.entries(result)
+      return tt
+    },
     cal_gisae(index){
       this.reset_gisae()
       this.update_Bigluck(index)
-      for (let i = 1; i<10; i+=2){
+      for (var i = 1; i<10; i+=2){
         if (i !== 9){
-          l =this.ganzi[i].amjang.length
-          for (k=1; k<l; k++){
+          var l =this.ganzi[i].amjang.length
+          for (var k=1; k<l; k++){
             a = this.ganzi[i].amjang[k][0]
             a5 = this.get_5hang(a)
             this.gisae[a5].content.push( 
@@ -266,10 +264,10 @@ export default {
           }
         }
         else {
-          l =this.ganzi[i-1].amjang.length
-          for (k=1; k<l; k++){
-            a = this.ganzi[i-1].amjang[k][0]
-            a5 = this.get_5hang(a)
+          var l =this.ganzi[i-1].amjang.length
+          for (var k=1; k<l; k++){
+            var a = this.ganzi[i-1].amjang[k][0]
+            var a5 = this.get_5hang(a)
             this.gisae[a5].content.push( 
               [this.ganzi[i-1].hanja+'中'+this.ganzi[i-1].amjang[k][0],
                 this.ganzi[i-1].amjang[k][1]] )
@@ -277,14 +275,14 @@ export default {
           }
         }
       }
-      for (let i=0;i<5;i++){
-        dup = this.get_dup_gisae(this.gisae[i].content)
+      for (var i=0;i<5;i++){
+        var dup = this.get_dup_gisae(this.gisae[i].content)
         this.gisae[i].content = []
         if (dup.length !== 0){
-          for (j=0; j<dup.length;j++){
-            a = dup[j][0].slice(4,dup[j][0].length)
-            n = dup[j][1]
-            this.gisae[i].content.push([dup[j][0].slice(0,3),n*a])
+          for (var j=0; j<dup.length;j++){
+            var a = dup[j][0].slice(4,dup[j][0].length)
+            var nn = dup[j][1]
+            this.gisae[i].content.push([dup[j][0].slice(0,3),nn*a])
           }    
         }
       }
