@@ -75,9 +75,18 @@
     {{gisae[2].value}},{{gisae[2].content}}<br>
     {{gisae[3].value}},{{gisae[3].content}}<br>
     {{gisae[4].value}},{{gisae[4].content}}<br>
-    <div class="pentagon" >
+    <!-- <div class="pentagon" >
       <span v-for= "i in [0,1,2,3,4]" :key="i" :class="{red: true}">{{gisae[i].id }},{{gisae[i].content}}</span>
+    </div> -->
+    <!-- <div class="pentagon" >
+      <span v-for= "i in [0,1,2,3,4]" :key="i" >{{gisae[i].id }}</span>
+    </div> -->
+    <div class="pentagon" >
+      <span v-for= "i in [3,4,0,1,2]" :key="i" >{{gisae[i].id }}</span>
     </div>
+    <!-- <div class="pentagon" >
+      <span :key=gisae[0].id_n>{{gisae[0].id }},{{gisae[0].content}}</span>
+    </div> -->
   </div>
 </template>
 
@@ -101,11 +110,11 @@ export default {
       name: '장승표',
       gender: '양',
       gisae:[
-        {id: '木', value: 0, content: []},
-        {id: '火', value: 0, content: []},
-        {id: '土', value: 0, content: []},
-        {id: '金', value: 0, content: []},
-        {id: '水', value: 0, content: []},
+        {id: '木', value: 0, content: [],id_n: 0},
+        {id: '火', value: 0, content: [],id_n: 1},
+        {id: '土', value: 0, content: [],id_n: 2},
+        {id: '金', value: 0, content: [],id_n: 3},
+        {id: '水', value: 0, content: [],id_n: 4},
       ],
       sky_char: [
         {id: '갑', hanja: "甲", value: 0, umyang: "양"},
@@ -160,7 +169,8 @@ export default {
   },
   methods: {
     get_10shin(a,b){ ///a: 십신을 도출하고자 하는 천간, b: 해당 천간의 음양 (정편 구분을 위해)
-      var ss_o = [];var ss_x = [];
+      var ss_o = [];
+      var ss_x = [];
       if (this.ganzi[4].value == 0){             // 일주가 목오행
         var ss_o = ["비견","식신","편재","편관","편인"] // 오행이 같음
         var ss_x = ["비겁","상관","정재","정관","정인"] // 오행이 다름
@@ -179,10 +189,10 @@ export default {
       }
       else if (this.ganzi[4].value == 4){             // 일주가 수오행
         var ss_o = ["식신","편재","편관","편인","비견"] // 오행이 같음
-        var ss_x = [,"상관","정재","정관","정인","비겁"] // 오행이 다름
+        var ss_x = ["상관","정재","정관","정인","비겁"] // 오행이 다름
       }
       if (this.ganzi[4].umyang == b){
-          return ss_o[a]
+        return ss_o[a]
       }
       else {
         return ss_x[a]
@@ -246,7 +256,7 @@ export default {
                 var fh = this.get_5hang(this.ganzi[i].amjang[mm][0])
                 var uy = this.get_umyang(this.ganzi[i].amjang[mm][0])
                 var ts = this.get_10shin(fh,uy)
-                empty.push([this.ganzi[i].amjang[mm][0],this.ganzi[i].amjang[mm][1]*2,ts])  
+                empty.push([this.ganzi[i].amjang[mm][0],this.ganzi[i].amjang[mm][1],ts])  
               }
               this.ganzi[i].amjang = empty                   
             }
@@ -263,6 +273,7 @@ export default {
             var uy = this.get_umyang(this.ganzi[3].amjang[mm][0])
             var ts = this.get_10shin(fh,uy)
             empty.push([this.ganzi[3].amjang[mm][0],this.ganzi[3].amjang[mm][1]*2,ts])  
+            // empty.push([this.ganzi[3].amjang[mm][0],this.ganzi[3].amjang[mm][1],ts])  
           }
           this.ganzi[i-2].amjang = empty              
           }
@@ -454,30 +465,46 @@ export default {
 <style>
 .pentagon {
   position: relative;
-  width: 200px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   background-color: gray;
 }
 
 .pentagon span:nth-child(1) {
   position: absolute;
-  top: 10px;
-  left: 100px;
-  color: red;
-}
-.pentagon span:nth-child(2) {
-  position: absolute;
   top: 50px;
   left: 130px;
   background-color: green;
 }
+.pentagon span:nth-child(2) {
+  position: absolute;
+  top: 110px;
+  left: 200px;
+  background-color: red;
+}
 .pentagon span:nth-child(3) {
   position: absolute;
-  top: 90px;
-  left: 110px;
+  top: 190px;
+  left: 160px;
   font-weight: bold;
+  background-color: yellow;
 }
 .pentagon span:nth-child(4) {
+  position: absolute;
+  top: 190px;
+  left: 70px;
+  font-weight: bold;
+  background-color:white;
+}
+.pentagon span:nth-child(5) {
+  position: absolute;
+  top: 110px;
+  left: 50px;
+  font-weight: bold;
+  color: white;
+  background-color:black;
+}
+/* .pentagon span:nth-child(4) {
   position: absolute;
   top: 90px;
   left: 80px;
@@ -485,11 +512,12 @@ export default {
   height: 20px;
   padding: 5px;
   border-radius: 15px;
+  background-color:white;
   border: 1px solid black;
 }
 .pentagon span:nth-child(5) {
   position: absolute;
   top: 50px;
   left: 60px;
-}
+} */
 </style>
