@@ -23,7 +23,7 @@
         v-model="typed_ganzi" />
     </form>
     <br>
-    <button @click="[change_ganzi(),cal_gisae(12)]">간지입력완료</button>
+    <button @click="[change_ganzi(),cal_gisae(12),cal_5hang_cons()]">간지입력완료</button>
     <table >
       <tr>
         <th> 大運 </th>
@@ -75,18 +75,9 @@
     {{gisae[2].value}},{{gisae[2].content}}<br>
     {{gisae[3].value}},{{gisae[3].content}}<br>
     {{gisae[4].value}},{{gisae[4].content}}<br>
-    <!-- <div class="pentagon" >
-      <span v-for= "i in [0,1,2,3,4]" :key="i" :class="{red: true}">{{gisae[i].id }},{{gisae[i].content}}</span>
-    </div> -->
-    <!-- <div class="pentagon" >
-      <span v-for= "i in [0,1,2,3,4]" :key="i" >{{gisae[i].id }}</span>
-    </div> -->
     <div class="pentagon" >
-      <span v-for= "i in [3,4,0,1,2]" :key="i" >{{gisae[i].id }}</span>
+      <span v-for= "i in this.fhang_cons" :key=i style="border: 1px solid black; padding: 5px;">{{gisae[i].id }}</span>
     </div>
-    <!-- <div class="pentagon" >
-      <span :key=gisae[0].id_n>{{gisae[0].id }},{{gisae[0].content}}</span>
-    </div> -->
   </div>
 </template>
 
@@ -94,6 +85,7 @@
 export default {
   data () {
     return {
+      fhang_cons: [],
       typed_ganzi: '신미을미신사을미',
       ganzi: [
         {id: 0, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //연간 0
@@ -168,6 +160,23 @@ export default {
     }
   },
   methods: {
+    cal_5hang_cons(){
+      if (this.ganzi[4].value==0){
+        this.fhang_cons = [0,1,2,3,4]
+      }
+      else if(this.ganzi[4].value==1){
+        this.fhang_cons = [1,2,3,4,0]
+      }
+      else if(this.ganzi[4].value==2){
+        this.fhang_cons = [2,3,4,0,1]
+      }
+      else if(this.ganzi[4].value==3){
+        this.fhang_cons = [3,4,0,1,2]
+      }
+      else if(this.ganzi[4].value==4){
+        this.fhang_cons = [4,0,1,2,3]
+      }
+    },
     get_10shin(a,b){ ///a: 십신을 도출하고자 하는 천간, b: 해당 천간의 음양 (정편 구분을 위해)
       var ss_o = [];
       var ss_x = [];
@@ -474,12 +483,14 @@ export default {
   position: absolute;
   top: 50px;
   left: 130px;
+  font-weight: bold;
   background-color: green;
 }
 .pentagon span:nth-child(2) {
   position: absolute;
   top: 110px;
   left: 200px;
+  font-weight: bold;
   background-color: red;
 }
 .pentagon span:nth-child(3) {
