@@ -27,42 +27,41 @@
     <table >
       <tr>
         <th> 大運 </th>
-        <th v-for = "i in ['時柱','日柱','月柱','年柱']" :key="i">{{ i }}</th>
+        <th v-for = "i in ['時柱','日柱','月柱','年柱']" :key="i" >{{ i }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[0].big_luck_sky}}<sup>{{big_luck[0].umyang}}</sup><sub>{{big_luck[0].ten_shin}}</sub> </th>
-        <th v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}<sup>{{ganzi[i].umyang}}</sup><sub>{{ganzi[i].ten_shin}}</sub></th>
+        <th class='big_letter'> {{big_luck[0].big_luck_sky}}<sup>{{big_luck[0].umyang}}</sup><sub>{{big_luck[0].ten_shin}}</sub> </th>
+        <th class='big_letter' v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}<sup>{{ganzi[i].umyang}}</sup><sub>{{ganzi[i].ten_shin}}</sub></th>
       </tr>
       <tr>
-        <th> {{big_luck[1].big_luck_ear}} </th>
-        <th v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].hanja }}</th>
+        <th class='big_letter'> {{big_luck[1].big_luck_ear}} </th>
+        <th class='big_letter' v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].hanja }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang[0]}} </th>
-        <th v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[1] }}</th>
+        <th class='small_letter'> {{big_luck[2].big_luck_Amzang[0]}} </th>
+        <th class='small_letter' v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[1] }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang[1]}} </th>
-        <th v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[2] }}</th>
+        <th class='small_letter'> {{big_luck[2].big_luck_Amzang[1]}} </th>
+        <th class='small_letter' v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[2] }}</th>
       </tr>
       <tr>
-        <th> {{big_luck[2].big_luck_Amzang[2]}} </th>
-        <th v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[3] }}</th>
+        <th class='small_letter'> {{big_luck[2].big_luck_Amzang[2]}} </th>
+        <th class='small_letter' v-for = "i in [7,5,9,1]" :key="i">{{ ganzi[i].amjang[3] }}</th>
       </tr>
     </table>
 
     運路(운로)
-    <td>
-          <button @click=[update_Bigluck(12),cal_gisae(12)]>원국만 보기</button>
-    </td>
-    <table>
+    <button @click=[update_Bigluck(12),cal_gisae(12)]>원국만 보기</button>
+    
+    <table >
       <tr>    
         <td v-for = "i in [11,10,9,8,7,6,5,4,3,2,1,0]" :key="i">
           <button @click=[update_Bigluck(i),cal_gisae(i)]>{{ get_BigLuck()[i][0][0] }}<br>
             {{get_BigLuck()[i][0][1] }}
           </button>
+          <br>
           <select>
-            <option disabled value="">吉凶</option>
             <option v-for= "option in GH" :key= "option.text">
             {{ option.text }}
             </option>
@@ -70,14 +69,17 @@
         </td>
       </tr>
     </table>
+    
     {{gisae[0].value}},{{gisae[0].content}}<br>
     {{gisae[1].value}},{{gisae[1].content}}<br>
     {{gisae[2].value}},{{gisae[2].content}}<br>
     {{gisae[3].value}},{{gisae[3].content}}<br>
     {{gisae[4].value}},{{gisae[4].content}}<br>
     <div class="pentagon" >
-      <span v-for= "i in this.fhang_cons" :key=i style="border: 1px solid black; padding: 5px;">{{gisae[i].id }}</span>
+      <span v-for= "i in this.fhang_cons" :key=i 
+      style="border: 1px solid black; padding: 5px;">{{gisae[i].id }}</span>
     </div>
+    
   </div>
 </template>
 
@@ -86,6 +88,7 @@ export default {
   data () {
     return {
       fhang_cons: [],
+      fhang_color: ["green","red","yellow","white","black"],
       typed_ganzi: '신미을미신사을미',
       ganzi: [
         {id: 0, hanja: "o", value: "o", umyang: "o", ten_shin: ""}, //연간 0
@@ -472,6 +475,12 @@ export default {
 </script>
 
 <style>
+.big_letter{
+  font-size: 150%
+}
+.small_letter{
+  font-size: 80%
+}
 .pentagon {
   position: relative;
   width: 300px;
@@ -479,41 +488,41 @@ export default {
   background-color: gray;
 }
 
-.pentagon span:nth-child(1) {
+.pentagon span:nth-child(1){
   position: absolute;
   top: 50px;
   left: 130px;
   font-weight: bold;
-  background-color: green;
+  /* background-color: green; */
 }
 .pentagon span:nth-child(2) {
   position: absolute;
   top: 110px;
   left: 200px;
   font-weight: bold;
-  background-color: red;
+  /* background-color: red; */
 }
 .pentagon span:nth-child(3) {
   position: absolute;
   top: 190px;
   left: 160px;
   font-weight: bold;
-  background-color: yellow;
+  /* background-color: yellow; */
 }
 .pentagon span:nth-child(4) {
   position: absolute;
   top: 190px;
   left: 70px;
   font-weight: bold;
-  background-color:white;
+  /* background-color:white; */
 }
 .pentagon span:nth-child(5) {
   position: absolute;
   top: 110px;
   left: 50px;
   font-weight: bold;
-  color: white;
-  background-color:black;
+  /* color: white;
+  background-color:black; */
 }
 /* .pentagon span:nth-child(4) {
   position: absolute;
