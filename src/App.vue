@@ -24,11 +24,12 @@
     </form>
     <br>
     <button @click="[change_ganzi(),cal_gisae(12),cal_5hang_cons()]">간지입력완료</button>
+    <div v-show = "ganzi[0].hanja == '辛'" class="test_line"></div>
     <table >
-      <tr>
+      <!-- <tr>
         <th> 大運 </th>
         <th v-for = "i in ['時柱','日柱','月柱','年柱']" :key="i" >{{ i }}</th>
-      </tr>
+      </tr> -->
       <tr>
         <th class='big_letter'> {{big_luck[0].big_luck_sky}}<sup>{{big_luck[0].umyang}}</sup><sub>{{big_luck[0].ten_shin}}</sub> </th>
         <th class='big_letter' v-for = "i in [6,4,2,0]" :key="i">{{ ganzi[i].hanja }}<sup>{{ganzi[i].umyang}}</sup><sub>{{ganzi[i].ten_shin}}</sub></th>
@@ -70,14 +71,31 @@
       </tr>
     </table>
     
-    {{gisae[0].value}},{{gisae[0].content}}<br>
+    <!-- {{gisae[0].value}},{{gisae[0].content}}<br>
     {{gisae[1].value}},{{gisae[1].content}}<br>
     {{gisae[2].value}},{{gisae[2].content}}<br>
     {{gisae[3].value}},{{gisae[3].content}}<br>
-    {{gisae[4].value}},{{gisae[4].content}}<br>
-    <div class="pentagon" >
+    {{gisae[4].value}},{{gisae[4].content}}<br> -->
+    <div class="pentagon">
       <span v-for= "i in this.fhang_cons" :key=i 
-      style="border: 1px solid black; padding: 5px;">{{gisae[i].id }}</span>
+      style="border: 1px solid black; padding: 5px;" 
+      :class="fhang_color[i]">{{gisae[i].id }}</span>
+        <!-- <span v-for = "k in gisae[i].content" :key=k >{{gisae[i].content[k]}}</span> -->
+        <span v-for = "k in this.fhang_cons" :key=k+5
+        style="font-size: small">
+          <!-- <span v-for = "k in gisae[i].content" :key=k >{{gisae[i].content[k]}}</span> -->
+          {{gisae[k].content[0]}}<br>
+          {{gisae[k].content[1]}}<br>
+          {{gisae[k].content[2]}}<br>
+          {{gisae[k].content[3]}}<br>
+          {{gisae[k].content[4]}}<br>
+          {{gisae[k].content[5]}}<br>
+          {{gisae[k].content[6]}}
+          </span>
+          <span v-for = "k in this.fhang_cons" :key=k+10
+        style="font-size: medium">
+          {{gisae[k].value}}
+          </span>
     </div>
     
   </div>
@@ -475,54 +493,127 @@ export default {
 </script>
 
 <style>
+.test_line{
+  width: "10px"
+}
 .big_letter{
   font-size: 150%
 }
 .small_letter{
   font-size: 80%
 }
+.green{
+  background-color: green;
+}
+.red{
+  background-color: red;
+}
+.yellow{
+  background-color: yellow;
+}
+.white{
+  background-color: white;
+}
+.black{
+  color: white;
+  background-color: black;
+}
 .pentagon {
   position: relative;
-  width: 300px;
-  height: 300px;
-  background-color: gray;
+  width: 400px;
+  height: 350px;
+  background-color: rgb(150, 146, 146);
 }
 
 .pentagon span:nth-child(1){
   position: absolute;
-  top: 50px;
-  left: 130px;
+  top: 80px;
+  left: 170px;
   font-weight: bold;
-  /* background-color: green; */
+}
+.pentagon span:nth-child(6) {
+  position: absolute;
+  top: 40px;
+  left: 210px;
+  font-weight: bold;
+}
+.pentagon span:nth-child(11) {
+  position: absolute;
+  top: 60px;
+  left: 175px;
+  font-weight: bold;
 }
 .pentagon span:nth-child(2) {
   position: absolute;
-  top: 110px;
-  left: 200px;
+  top: 160px;
+  left: 260px;
   font-weight: bold;
-  /* background-color: red; */
+}
+.pentagon span:nth-child(7) {
+  position: absolute;
+  top: 160px;
+  left: 290px;
+  font-weight: bold;
+}
+.pentagon span:nth-child(12) {
+  position: absolute;
+  top: 140px;
+  left: 260px;
+  font-weight: bold;
 }
 .pentagon span:nth-child(3) {
   position: absolute;
-  top: 190px;
-  left: 160px;
+  top: 260px;
+  left: 220px;
   font-weight: bold;
-  /* background-color: yellow; */
+}
+.pentagon span:nth-child(8) {
+  position: absolute;
+  top: 260px;
+  left: 260px;
+  font-weight: bold;
+}
+.pentagon span:nth-child(13) {
+  position: absolute;
+  top: 240px;
+  left: 220px;
+  font-weight: bold;
 }
 .pentagon span:nth-child(4) {
   position: absolute;
-  top: 190px;
-  left: 70px;
+  top: 260px;
+  left: 120px;
   font-weight: bold;
-  /* background-color:white; */
+}
+.pentagon span:nth-child(9) {
+  position: absolute;
+  top: 260px;
+  left: 20px;
+  font-weight: bold;
+}
+.pentagon span:nth-child(14) {
+  position: absolute;
+  top: 240px;
+  left: 120px;
+  font-weight: bold;
 }
 .pentagon span:nth-child(5) {
   position: absolute;
-  top: 110px;
-  left: 50px;
+  top: 160px;
+  left: 95px;
   font-weight: bold;
-  /* color: white;
-  background-color:black; */
+}
+.pentagon span:nth-child(10) {
+  position: absolute;
+  top: 160px;
+  left: 0px;
+  font-weight: bold;
+}
+.pentagon span:nth-child(15) {
+  position: absolute;
+  top: 140px;
+  left: 95px;
+  font-weight: bold;
 }
 /* .pentagon span:nth-child(4) {
   position: absolute;
